@@ -7,7 +7,8 @@
     <meta name="keywords" content="BMI 計算器, 身體質量指數, 健康建議, 飲食運動, BMI calculator">
     <meta http-equiv="Cache-Control" content="public, max-age=31536000">
     <title>BMI 計算器 - 快速計算你的身體質量指數</title>
-  <meta name="google-site-verification" content="FvspJpidGSaKrXdO8eUu-_JmuBGWqJv47IhAhnspSrs" />
+    <!-- 插入 AdSense 腳本（只需插入一次） -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=YOUR_ADSENSE_CLIENT_ID" crossorigin="anonymous"></script>
     <style>
         body {
             font-family: 'Segoe UI', Arial, sans-serif;
@@ -24,8 +25,17 @@
             border-radius: 20px;
             box-shadow: 0 6px 25px rgba(0, 0, 0, 0.15);
             text-align: center;
-            width: 90%;
-            max-width: 700px;
+            width: 700px;
+            display: flex;
+            flex-direction: row;
+        }
+        .main-content {
+            flex: 1;
+            text-align: center;
+        }
+        .sidebar {
+            width: 300px;
+            padding-left: 20px;
         }
         h1 {
             font-size: 2.25rem;
@@ -125,52 +135,98 @@
             color: #546e7a;
             line-height: 1.6;
         }
+        .ad-unit {
+            margin: 20px 0;
+            text-align: center;
+        }
         @media (max-width: 768px) {
             .container {
                 width: 90%;
+                flex-direction: column;
+            }
+            .sidebar {
+                display: none;
             }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1 id="title">BMI 計算器</h1>
-        <button onclick="switchLang('zh')">中文</button>
-        <button onclick="switchLang('en')">English</button>
-        <div>
-            <label id="heightLabel" for="height">身高:</label>
-            <input type="number" id="height" step="0.1" min="0" placeholder="如: 170">
-            <select id="heightUnit" onchange="convertHeight()">
-                <option value="cm">公分</option>
-                <option value="ft">英尺</option>
-            </select>
+        <div class="main-content">
+            <h1 id="title">BMI 計算器</h1>
+            <!-- 頁面頂部廣告 -->
+            <div class="ad-unit">
+                <ins class="adsbygoogle"
+                     style="display:block"
+                     data-ad-client="YOUR_ADSENSE_CLIENT_ID"
+                     data-ad-slot="YOUR_AD_SLOT_ID_TOP"
+                     data-ad-format="auto"
+                     data-full-width-responsive="true"></ins>
+                <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
+            </div>
+            <button onclick="switchLang('zh')">中文</button>
+            <button onclick="switchLang('en')">English</button>
+            <div>
+                <label id="heightLabel" for="height">身高:</label>
+                <input type="number" id="height" step="0.1" min="0" placeholder="如: 170">
+                <select id="heightUnit" onchange="convertHeight()">
+                    <option value="cm">公分</option>
+                    <option value="ft">英尺</option>
+                </select>
+            </div>
+            <div>
+                <label id="weightLabel" for="weight">體重:</label>
+                <input type="number" id="weight" step="0.1" min="0" placeholder="如: 60">
+                <select id="weightUnit" onchange="convertWeight()">
+                    <option value="kg">公斤</option>
+                    <option value="lb">磅</option>
+                </select>
+            </div>
+            <button id="calcButton" onclick="calculateBMI()">計算 BMI</button>
+            <div id="result"></div>
+            <div id="rangeInfo"></div>
+            <div id="weightSuggestion"></div>
+            <div id="healthTips"></div>
+            <button id="saveResult" onclick="saveBMIResult()" style="margin-top: 10px;">儲存結果</button>
+            <button id="shareResult" onclick="shareBMIResult()" style="margin-top: 10px;">分享結果</button>
+            <!-- 結果下方廣告 -->
+            <div class="ad-unit">
+                <ins class="adsbygoogle"
+                     style="display:block"
+                     data-ad-client="YOUR_ADSENSE_CLIENT_ID"
+                     data-ad-slot="YOUR_AD_SLOT_ID_RESULT"
+                     data-ad-format="auto"
+                     data-full-width-responsive="true"></ins>
+                <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
+            </div>
+            <div class="bmi-bar">
+                <div class="bmi-fill" id="bmiFill"></div>
+                <span class="bmi-marker" style="left: 18.5%">18.5</span>
+                <span class="bmi-marker" style="left: 24%">24</span>
+                <span class="bmi-marker" style="left: 27%">27</span>
+            </div>
+            <div class="content-section">
+                <h2>什麼是 BMI？</h2>
+                <p>身體質量指數（BMI）是一種用來衡量體重是否健康的指標，通過身高和體重的比例計算。使用我們的 BMI 計算器，快速了解你的健康狀態！</p>
+                <h2>如何使用 BMI 計算器？</h2>
+                <p>輸入你的身高（公分或英尺）和體重（公斤或磅），點擊「計算 BMI」，即可查看你的 BMI 值和健康建議。</p>
+            </div>
         </div>
-        <div>
-            <label id="weightLabel" for="weight">體重:</label>
-            <input type="number" id="weight" step="0.1" min="0" placeholder="如: 60">
-            <select id="weightUnit" onchange="convertWeight()">
-                <option value="kg">公斤</option>
-                <option value="lb">磅</option>
-            </select>
-        </div>
-        <button id="calcButton" onclick="calculateBMI()">計算 BMI</button>
-        <div id="result"></div>
-        <div id="rangeInfo"></div>
-        <div id="weightSuggestion"></div>
-        <div id="healthTips"></div>
-        <button id="saveResult" onclick="saveBMIResult()" style="margin-top: 10px;">儲存結果</button>
-        <button id="shareResult" onclick="shareBMIResult()" style="margin-top: 10px;">分享結果</button>
-        <div class="bmi-bar">
-            <div class="bmi-fill" id="bmiFill"></div>
-            <span class="bmi-marker" style="left: 18.5%">18.5</span>
-            <span class="bmi-marker" style="left: 24%">24</span>
-            <span class="bmi-marker" style="left: 27%">27</span>
-        </div>
-        <div class="content-section">
-            <h2>什麼是 BMI？</h2>
-            <p>身體質量指數（BMI）是一種用來衡量體重是否健康的指標，通過身高和體重的比例計算。使用我們的 BMI 計算器，快速了解你的健康狀態！</p>
-            <h2>如何使用 BMI 計算器？</h2>
-            <p>輸入你的身高（公分或英尺）和體重（公斤或磅），點擊「計算 BMI」，即可查看你的 BMI 值和健康建議。</p>
+        <!-- 側邊欄廣告 -->
+        <div class="sidebar">
+            <div class="ad-unit">
+                <ins class="adsbygoogle"
+                     style="display:inline-block;width:300px;height:600px"
+                     data-ad-client="YOUR_ADSENSE_CLIENT_ID"
+                     data-ad-slot="YOUR_AD_SLOT_ID_SIDEBAR"></ins>
+                <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
+            </div>
         </div>
     </div>
 
