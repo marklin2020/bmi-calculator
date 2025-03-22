@@ -1,557 +1,413 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
+<!DOCTYPE html>
+<html lang="zh-TW">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta http-equiv="Content-Style-Type" content="text/css">
-  <title></title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="使用我們的 BMI 計算器，快速計算你的身體質量指數，了解健康狀態並獲得飲食與運動建議。支援中英文，簡單易用！">
+    <meta name="keywords" content="BMI 計算器, 身體質量指數, 健康建議, 飲食運動, BMI calculator">
+    <meta http-equiv="Cache-Control" content="public, max-age=31536000">
+    <title>BMI 計算器 - 快速計算你的身體質量指數</title>
   <meta name="google-site-verification" content="FvspJpidGSaKrXdO8eUu-_JmuBGWqJv47IhAhnspSrs" />
-  <meta name="Generator" content="Cocoa HTML Writer">
-  <meta name="CocoaVersion" content="2113.2">
-  <style type="text/css">
-    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #000000; -webkit-text-stroke: #000000}
-    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px 'PingFang TC'; color: #000000; -webkit-text-stroke: #000000}
-    p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #000000; -webkit-text-stroke: #000000; min-height: 14.0px}
-    span.s1 {font-kerning: none}
-    span.s2 {font: 12.0px Helvetica; font-kerning: none}
-    span.s3 {font: 12.0px 'PingFang TC'; font-kerning: none}
-  </style>
-<meta name="google-site-verification" content="FvspJpidGSaKrXdO8eUu-_JmuBGWqJv47IhAhnspSrs" />
-
-  
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #d1e7ff, #a3cfff);
+        }
+        .container {
+            background: #ffffff;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.15);
+            text-align: center;
+            width: 90%;
+            max-width: 700px;
+        }
+        h1 {
+            font-size: 2.25rem;
+            color: #1e88e5;
+            margin-bottom: 30px;
+        }
+        label {
+            font-size: 1.5rem;
+            color: #37474f;
+            margin-right: 15px;
+        }
+        input {
+            padding: 10px;
+            font-size: 1.5rem;
+            width: 140px;
+            border: 2px solid #b0bec5;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            transition: border-color 0.3s;
+        }
+        input:focus {
+            border-color: #42a5f5;
+            outline: none;
+        }
+        select {
+            padding: 10px;
+            font-size: 1.5rem;
+            border-radius: 8px;
+            border: 2px solid #b0bec5;
+            background-color: #f5f7fa;
+        }
+        button {
+            padding: 12px 30px;
+            font-size: 1.5rem;
+            background-color: #42a5f5;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin: 5px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #1e88e5;
+        }
+        #result, #rangeInfo, #weightSuggestion {
+            margin-top: 15px;
+            font-size: 1.875rem;
+            color: #263238;
+            text-align: left;
+            padding-left: 20px;
+        }
+        #rangeInfo, #weightSuggestion {
+            font-size: 1.2rem;
+            color: #546e7a;
+        }
+        #healthTips {
+            margin-top: 15px;
+            font-size: 1.2rem;
+            color: #546e7a;
+            text-align: left;
+            padding-left: 20px;
+            line-height: 1.6;
+        }
+        .bmi-bar {
+            width: 100%;
+            height: 30px;
+            background: #eceff1;
+            border-radius: 15px;
+            margin-top: 25px;
+            position: relative;
+            overflow: hidden;
+        }
+        .bmi-fill {
+            height: 100%;
+            border-radius: 15px;
+            transition: width 0.5s ease-in-out;
+        }
+        .bmi-marker {
+            position: absolute;
+            top: -30px;
+            font-size: 1.125rem;
+            color: #78909c;
+        }
+        .content-section {
+            margin-top: 30px;
+            text-align: left;
+            padding: 0 20px;
+        }
+        .content-section h2 {
+            font-size: 1.5rem;
+            color: #1e88e5;
+            margin-top: 20px;
+        }
+        .content-section p {
+            font-size: 1.2rem;
+            color: #546e7a;
+            line-height: 1.6;
+        }
+        @media (max-width: 768px) {
+            .container {
+                width: 90%;
+            }
+        }
+    </style>
 </head>
 <body>
-<p class="p1"><span class="s1">&lt;!DOCTYPE html&gt;</span></p>
-<p class="p1"><span class="s1">&lt;html lang="zh-TW"&gt;</span></p>
-<p class="p1"><span class="s1">&lt;head&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">       </span>&lt;meta charset="UTF-8"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</span></p>
-<p class="p2"><span class="s2"><span class="Apple-converted-space">    </span>&lt;meta name="description" content="</span><span class="s1">使用我們的</span><span class="s2"> BMI </span><span class="s1">計算器，快速計算你的身體質量指數，了解健康狀態並獲得飲食與運動建議。支援中英文，簡單易用！</span><span class="s2">"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;meta name="keywords" content="BMI </span><span class="s3">計算器</span><span class="s1">, </span><span class="s3">身體質量指數</span><span class="s1">, </span><span class="s3">健康建議</span><span class="s1">, </span><span class="s3">飲食運動</span><span class="s1">, BMI calculator"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;meta http-equiv="Cache-Control" content="public, max-age=31536000"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;title&gt;BMI </span><span class="s3">計算器</span><span class="s1"> - </span><span class="s3">快速計算你的身體質量指數</span><span class="s1">&lt;/title&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;!-- Hreflang </span><span class="s3">標籤</span><span class="s1"> --&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;link rel="alternate" hreflang="zh" href="https://marklin2020.github.io/bmi-calculator?lang=zh"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;link rel="alternate" hreflang="en" href="https://marklin2020.github.io/bmi-calculator?lang=en"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;!-- </span><span class="s3">結構化資料</span><span class="s1"> --&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;script type="application/ld+json"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>{</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>"@context": "https://schema.org",</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>"@type": "WebApplication",</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>"name": "BMI </span><span class="s3">計算器</span><span class="s1">",</span></p>
-<p class="p2"><span class="s2"><span class="Apple-converted-space">        </span>"description": "</span><span class="s1">一個簡單易用的</span><span class="s2"> BMI </span><span class="s1">計算器，幫助你快速計算身體質量指數並提供健康建議。</span><span class="s2">",</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>"url": "https://marklin2020.github.io/bmi-calculator",</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>"applicationCategory": "HealthApplication",</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>"operatingSystem": "All"</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/script&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;!-- Google Analytics</span><span class="s3">（可選，需替換</span><span class="s1"> YOUR_GA_TRACKING_ID</span><span class="s3">）</span><span class="s1"> --&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;script async src="https://www.googletagmanager.com/gtag/js?id=YOUR_GA_TRACKING_ID"&gt;&lt;/script&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;script&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>window.dataLayer = window.dataLayer || [];</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>function gtag(){dataLayer.push(arguments);}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>gtag('js', new Date());</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>gtag('config', 'YOUR_GA_TRACKING_ID');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/script&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;!-- Google AdSense</span><span class="s3">（可選，需替換</span><span class="s1"> YOUR_ADSENSE_CLIENT_ID</span><span class="s3">）</span><span class="s1"> --&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=YOUR_ADSENSE_CLIENT_ID" crossorigin="anonymous"&gt;&lt;/script&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;style&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>body {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>font-family: 'Segoe UI', Arial, sans-serif;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>display: flex;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>justify-content: center;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>align-items: center;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>min-height: 100vh;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>margin: 0;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>background: linear-gradient(135deg, #d1e7ff, #a3cfff);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.container {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>background: #ffffff;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>padding: 40px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>border-radius: 20px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>box-shadow: 0 6px 25px rgba(0, 0, 0, 0.15);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>text-align: center;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>width: 700px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>display: flex;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>flex-direction: row;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.main-content {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>flex: 1;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>text-align: center;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.sidebar {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>width: 300px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>padding-left: 20px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>h1 {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>font-size: 2.25rem;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>color: #1e88e5;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>margin-bottom: 30px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>label {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>font-size: 1.5rem;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>color: #37474f;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>margin-right: 15px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>input {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>padding: 10px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>font-size: 1.5rem;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>width: 140px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>border: 2px solid #b0bec5;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>border-radius: 8px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>margin-bottom: 25px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>transition: border-color 0.3s;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>input:focus {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>border-color: #42a5f5;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>outline: none;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>select {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>padding: 10px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>font-size: 1.5rem;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>border-radius: 8px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>border: 2px solid #b0bec5;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>background-color: #f5f7fa;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>button {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>padding: 12px 30px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>font-size: 1.5rem;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>background-color: #42a5f5;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>color: white;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>border: none;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>border-radius: 8px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>cursor: pointer;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>margin: 5px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>transition: background-color 0.3s;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>button:hover {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>background-color: #1e88e5;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>#result, #rangeInfo, #weightSuggestion {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>margin-top: 15px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>font-size: 1.875rem;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>color: #263238;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>text-align: left;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>padding-left: 20px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>#rangeInfo, #weightSuggestion {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>font-size: 1.2rem;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>color: #546e7a;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>#healthTips {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>margin-top: 15px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>font-size: 1.2rem;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>color: #546e7a;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>text-align: left;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>padding-left: 20px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>line-height: 1.6;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.bmi-bar {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>width: 100%;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>height: 30px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>background: #eceff1;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>border-radius: 15px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>margin-top: 25px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>position: relative;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>overflow: hidden;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.bmi-fill {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>height: 100%;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>border-radius: 15px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>transition: width 0.5s ease-in-out;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.bmi-marker {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>position: absolute;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>top: -30px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>font-size: 1.125rem;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>color: #78909c;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.content-section {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>margin-top: 30px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>text-align: left;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>padding: 0 20px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.content-section h2 {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>font-size: 1.5rem;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>color: #1e88e5;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>margin-top: 20px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.content-section p {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>font-size: 1.2rem;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>color: #546e7a;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>line-height: 1.6;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.related-links {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>margin-top: 15px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>font-size: 1.2rem;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>text-align: left;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>padding-left: 20px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.related-links a {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>color: #42a5f5;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>text-decoration: none;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.related-links a:hover {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>text-decoration: underline;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.ad-unit {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>margin: 20px 0;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>text-align: center;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>@media (max-width: 768px) {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>.container {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>width: 90%;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>flex-direction: column;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>.sidebar {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>display: none;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/style&gt;</span></p>
-<p class="p1"><span class="s1">&lt;meta name="google-site-verification" content="FvspJpidGSaKrXdO8eUu-_JmuBGWqJv47IhAhnspSrs" /&gt;</span></p>
-<p class="p3"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1">&lt;/head&gt;</span></p>
-<p class="p1"><span class="s1">&lt;body&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div class="container"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="main-content"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;h1 id="title"&gt;BMI </span><span class="s3">計算器</span><span class="s1">&lt;/h1&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;!-- </span><span class="s3">頁面頂部廣告</span><span class="s1"> --&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div class="ad-unit"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;!-- </span><span class="s3">替換為你的</span><span class="s1"> AdSense </span><span class="s3">廣告單元代碼</span><span class="s1"> --&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;ins class="adsbygoogle"</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                     </span>style="display:block"</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                     </span>data-ad-client="YOUR_ADSENSE_CLIENT_ID"</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                     </span>data-ad-slot="YOUR_AD_SLOT_ID"</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                     </span>data-ad-format="auto"</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                     </span>data-full-width-responsive="true"&gt;&lt;/ins&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;script&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>(adsbygoogle = window.adsbygoogle || []).push({});</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/script&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;button onclick="switchLang('zh')"&gt;</span><span class="s3">中文</span><span class="s1">&lt;/button&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;button onclick="switchLang('en')"&gt;English&lt;/button&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;label id="heightLabel" for="height"&gt;</span><span class="s3">身高</span><span class="s1">:&lt;/label&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;input type="number" id="height" step="0.1" min="0" placeholder="</span><span class="s3">如</span><span class="s1">: 170"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;select id="heightUnit" onchange="convertHeight()"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;option value="cm"&gt;</span><span class="s3">公分</span><span class="s1">&lt;/option&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;option value="ft"&gt;</span><span class="s3">英尺</span><span class="s1">&lt;/option&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/select&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;label id="weightLabel" for="weight"&gt;</span><span class="s3">體重</span><span class="s1">:&lt;/label&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;input type="number" id="weight" step="0.1" min="0" placeholder="</span><span class="s3">如</span><span class="s1">: 60"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;select id="weightUnit" onchange="convertWeight()"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;option value="kg"&gt;</span><span class="s3">公斤</span><span class="s1">&lt;/option&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;option value="lb"&gt;</span><span class="s3">磅</span><span class="s1">&lt;/option&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/select&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;button id="calcButton" onclick="calculateBMI()"&gt;</span><span class="s3">計算</span><span class="s1"> BMI&lt;/button&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div id="result"&gt;&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div id="rangeInfo"&gt;&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div id="weightSuggestion"&gt;&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div id="healthTips"&gt;&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;button id="saveResult" onclick="saveBMIResult()" style="margin-top: 10px;"&gt;</span><span class="s3">儲存結果</span><span class="s1">&lt;/button&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;button id="shareResult" onclick="shareBMIResult()" style="margin-top: 10px;"&gt;</span><span class="s3">分享結果</span><span class="s1">&lt;/button&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;!-- </span><span class="s3">結果下方廣告</span><span class="s1"> --&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div class="ad-unit"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;!-- </span><span class="s3">替換為你的</span><span class="s1"> AdSense </span><span class="s3">廣告單元代碼</span><span class="s1"> --&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;ins class="adsbygoogle"</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                     </span>style="display:block"</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                     </span>data-ad-client="YOUR_ADSENSE_CLIENT_ID"</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                     </span>data-ad-slot="YOUR_AD_SLOT_ID"</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                     </span>data-ad-format="auto"</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                     </span>data-full-width-responsive="true"&gt;&lt;/ins&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;script&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>(adsbygoogle = window.adsbygoogle || []).push({});</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/script&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div class="related-links"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;p&gt;</span><span class="s3">了解更多：</span><span class="s1">&lt;a href="/healthy-diet"&gt;</span><span class="s3">健康飲食建議</span><span class="s1">&lt;/a&gt; | &lt;a href="/exercise-plan"&gt;</span><span class="s3">運動計劃</span><span class="s1">&lt;/a&gt;&lt;/p&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div class="bmi-bar"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div class="bmi-fill" id="bmiFill"&gt;&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;span class="bmi-marker" style="left: 18.5%"&gt;18.5&lt;/span&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;span class="bmi-marker" style="left: 24%"&gt;24&lt;/span&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;span class="bmi-marker" style="left: 27%"&gt;27&lt;/span&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div class="content-section"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;h2&gt;</span><span class="s3">什麼是</span><span class="s1"> BMI</span><span class="s3">？</span><span class="s1">&lt;/h2&gt;</span></p>
-<p class="p2"><span class="s2"><span class="Apple-converted-space">                </span>&lt;p&gt;</span><span class="s1">身體質量指數（</span><span class="s2">BMI</span><span class="s1">）是一種用來衡量體重是否健康的指標，通過身高和體重的比例計算。使用我們的</span><span class="s2"> BMI </span><span class="s1">計算器，快速了解你的健康狀態！</span><span class="s2">&lt;/p&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;h2&gt;</span><span class="s3">如何使用</span><span class="s1"> BMI </span><span class="s3">計算器？</span><span class="s1">&lt;/h2&gt;</span></p>
-<p class="p2"><span class="s2"><span class="Apple-converted-space">                </span>&lt;p&gt;</span><span class="s1">輸入你的身高（公分或英尺）和體重（公斤或磅），點擊「計算</span><span class="s2"> BMI</span><span class="s1">」，即可查看你的</span><span class="s2"> BMI </span><span class="s1">值和健康建議。</span><span class="s2">&lt;/p&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="sidebar"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div class="ad-unit"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;!-- </span><span class="s3">替換為你的</span><span class="s1"> AdSense </span><span class="s3">廣告單元代碼</span><span class="s1"> --&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;ins class="adsbygoogle"</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                     </span>style="display:inline-block;width:300px;height:600px"</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                     </span>data-ad-client="YOUR_ADSENSE_CLIENT_ID"</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                     </span>data-ad-slot="YOUR_AD_SLOT_ID"&gt;&lt;/ins&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;script&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>(adsbygoogle = window.adsbygoogle || []).push({});</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/script&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><br>
-</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;script&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>let lang = 'zh';</span></p>
-<p class="p1"><span class="s1"><br>
-</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const translations = {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>zh: {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>title: 'BMI </span><span class="s3">計算器</span><span class="s1">',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>heightLabel: '</span><span class="s3">身高</span><span class="s1">:',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>weightLabel: '</span><span class="s3">體重</span><span class="s1">:',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>calcButton: '</span><span class="s3">計算</span><span class="s1"> BMI',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>invalidInput: '</span><span class="s3">請輸入有效的身高和體重！</span><span class="s1">',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>result: (bmi, status) =&gt; `</span><span class="s3">你的</span><span class="s1"> BMI </span><span class="s3">是</span><span class="s1"> ${bmi} (${status})`,</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>rangeInfo: '</span><span class="s3">健康範圍：</span><span class="s1">18.5 - 23.9</span><span class="s3">（依據亞洲標準）</span><span class="s1">',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>weightSuggestion: (min, max) =&gt; `</span><span class="s3">建議體重範圍：</span><span class="s1">${min} - ${max} </span><span class="s3">公斤</span><span class="s1">`,</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>status: {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>underweight: '</span><span class="s3">過輕</span><span class="s1">',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>normal: '</span><span class="s3">正常</span><span class="s1">',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>overweight: '</span><span class="s3">過重</span><span class="s1">',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>obese: '</span><span class="s3">肥胖</span><span class="s1">'</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>},</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>healthTips: {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>underweight: {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>message: '</span><span class="s3">你的體重過輕，可能需要增加熱量攝取。</span><span class="s1">',</span></p>
-<p class="p2"><span class="s2"><span class="Apple-converted-space">                        </span>diet: '</span><span class="s1">飲食建議：多吃高蛋白食物（如雞蛋、魚、豆類）和健康脂肪（如堅果、牛油果），增加主食（如糙米、全麥麵包）。</span><span class="s2">',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>exercise: '</span><span class="s3">運動建議：進行力量訓練（如舉重、深蹲）以增加肌肉量，避免過多有氧運動。</span><span class="s1">'</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>},</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>normal: {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>message: '</span><span class="s3">你的體重在健康範圍內，繼續保持！</span><span class="s1">',</span></p>
-<p class="p2"><span class="s2"><span class="Apple-converted-space">                        </span>diet: '</span><span class="s1">飲食建議：均衡飲食，確保攝取足夠的蛋白質、蔬菜和全穀物，減少加工食品。</span><span class="s2">',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>exercise: '</span><span class="s3">運動建議：每週進行</span><span class="s1"> 150 </span><span class="s3">分鐘中等強度的有氧運動（如快走、游泳），搭配</span><span class="s1"> 2-3 </span><span class="s3">次力量訓練。</span><span class="s1">'</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>},</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>overweight: {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>message: '</span><span class="s3">你的體重偏重，建議控制熱量攝取並增加運動。</span><span class="s1">',</span></p>
-<p class="p2"><span class="s2"><span class="Apple-converted-space">                        </span>diet: '</span><span class="s1">飲食建議：減少高糖、高脂肪食物（如甜點、油炸食品），多吃高纖維食物（如蔬菜、全穀物），控制份量。</span><span class="s2">',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>exercise: '</span><span class="s3">運動建議：每週至少</span><span class="s1"> 150 </span><span class="s3">分鐘有氧運動（如跑步、騎腳踏車），搭配力量訓練以提升代謝。</span><span class="s1">'</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>},</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>obese: {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>message: '</span><span class="s3">你的體重屬於肥胖，建議積極減重以改善健康。</span><span class="s1">',</span></p>
-<p class="p2"><span class="s2"><span class="Apple-converted-space">                        </span>diet: '</span><span class="s1">飲食建議：避免高熱量食物（如含糖飲料、速食），增加蔬菜、低脂蛋白質（如雞胸肉、魚），控制總熱量攝取。</span><span class="s2">',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>exercise: '</span><span class="s3">運動建議：從低強度運動開始（如散步、瑜伽），逐步增加到每週</span><span class="s1"> 200-300 </span><span class="s3">分鐘有氧運動，搭配力量訓練。</span><span class="s1">'</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>},</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>units: {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>cm: '</span><span class="s3">公分</span><span class="s1">',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>ft: '</span><span class="s3">英尺</span><span class="s1">',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>kg: '</span><span class="s3">公斤</span><span class="s1">',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>lb: '</span><span class="s3">磅</span><span class="s1">'</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>},</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>en: {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>title: 'BMI Calculator',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>heightLabel: 'Height:',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>weightLabel: 'Weight:',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>calcButton: 'Calculate BMI',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>invalidInput: 'Please enter valid height and weight!',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>result: (bmi, status) =&gt; `Your BMI is ${bmi} (${status})`,</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>rangeInfo: 'Healthy range: 18.5 - 23.9 (Asian standard)',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>weightSuggestion: (min, max) =&gt; `Suggested weight range: ${min} - ${max} kg`,</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>status: {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>underweight: 'Underweight',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>normal: 'Normal',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>overweight: 'Overweight',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>obese: 'Obese'</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>},</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>healthTips: {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>underweight: {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>message: 'You are underweight and may need to increase calorie intake.',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>diet: 'Diet tips: Eat more high-protein foods (e.g., eggs, fish, beans) and healthy fats (e.g., nuts, avocado), and increase carbs (e.g., brown rice, whole-grain bread).',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>exercise: 'Exercise tips: Focus on strength training (e.g., weightlifting, squats) to build muscle, and avoid excessive cardio.'</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>},</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>normal: {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>message: 'Your weight is in the healthy range—keep it up!',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>diet: 'Diet tips: Maintain a balanced diet with enough protein, vegetables, and whole grains, and reduce processed foods.',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>exercise: 'Exercise tips: Aim for 150 minutes of moderate cardio per week (e.g., brisk walking, swimming) and 2-3 strength training sessions.'</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>},</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>overweight: {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>message: 'You are overweight; consider managing calorie intake and increasing exercise.',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>diet: 'Diet tips: Cut back on high-sugar, high-fat foods (e.g., desserts, fried foods), eat more high-fiber foods (e.g., vegetables, whole grains), and control portions.',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>exercise: 'Exercise tips: Do at least 150 minutes of cardio per week (e.g., running, cycling) and add strength training to boost metabolism.'</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>},</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>obese: {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>message: 'You are obese; active weight loss is recommended for better health.',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>diet: 'Diet tips: Avoid high-calorie foods (e.g., sugary drinks, fast food), increase vegetables and lean protein (e.g., chicken breast, fish), and control total calorie intake.',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>exercise: 'Exercise tips: Start with low-intensity activities (e.g., walking, yoga), gradually increase to 200-300 minutes of cardio per week, and include strength training.'</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>},</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>units: {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>cm: 'cm',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>ft: 'ft',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>kg: 'kg',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>lb: 'lb'</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>};</span></p>
-<p class="p1"><span class="s1"><br>
-</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>function updateLabels() {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const t = translations[lang];</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const heightUnit = document.getElementById('heightUnit').value;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const weightUnit = document.getElementById('weightUnit').value;</span></p>
-<p class="p1"><span class="s1"><br>
-</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>document.getElementById('title').textContent = t.title;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>document.getElementById('heightLabel').textContent = t.heightLabel;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>document.getElementById('weightLabel').textContent = t.weightLabel;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>document.getElementById('calcButton').textContent = t.calcButton;</span></p>
-<p class="p1"><span class="s1"><br>
-</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const heightSelect = document.getElementById('heightUnit');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const weightSelect = document.getElementById('weightUnit');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>heightSelect.options[0].text = t.units.cm;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>heightSelect.options[1].text = t.units.ft;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>weightSelect.options[0].text = t.units.kg;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>weightSelect.options[1].text = t.units.lb;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p1"><span class="s1"><br>
-</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>function switchLang(newLang) {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>lang = newLang;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>updateLabels();</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>calculateBMI();</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p1"><span class="s1"><br>
-</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>function convertHeight() {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const heightInput = document.getElementById('height');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const currentUnit = document.getElementById('heightUnit').value;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>let value = parseFloat(heightInput.value);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>if (isNaN(value)) return;</span></p>
-<p class="p1"><span class="s1"><br>
-</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>if (currentUnit === 'ft') {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>value = (value * 30.48).toFixed(1);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>} else {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>value = (value / 30.48).toFixed(1);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>heightInput.value = value;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>updateLabels();</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>calculateBMI();</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p1"><span class="s1"><br>
-</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>function convertWeight() {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const weightInput = document.getElementById('weight');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const currentUnit = document.getElementById('weightUnit').value;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>let value = parseFloat(weightInput.value);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>if (isNaN(value)) return;</span></p>
-<p class="p1"><span class="s1"><br>
-</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>if (currentUnit === 'lb') {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>value = (value * 0.453592).toFixed(1);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>} else {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>value = (value / 0.453592).toFixed(1);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>weightInput.value = value;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>updateLabels();</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>calculateBMI();</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p1"><span class="s1"><br>
-</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>function calculateBMI() {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const height = parseFloat(document.getElementById('height').value);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const weight = parseFloat(document.getElementById('weight').value);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const heightUnit = document.getElementById('heightUnit').value;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const weightUnit = document.getElementById('weightUnit').value;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const resultDiv = document.getElementById('result');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const rangeInfoDiv = document.getElementById('rangeInfo');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const weightSuggestionDiv = document.getElementById('weightSuggestion');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const healthTipsDiv = document.getElementById('healthTips');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const bmiFill = document.getElementById('bmiFill');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const t = translations[lang];</span></p>
-<p class="p1"><span class="s1"><br>
-</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>let heightInCm = heightUnit === 'ft' ? height * 30.48 : height;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>let weightInKg = weightUnit === 'lb' ? weight * 0.453592 : weight;</span></p>
-<p class="p1"><span class="s1"><br>
-</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>if (isNaN(heightInCm) || isNaN(weightInKg) || heightInCm &lt;= 0 || weightInKg &lt;= 0) {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>resultDiv.innerHTML = t.invalidInput;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>rangeInfoDiv.innerHTML = '';</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>weightSuggestionDiv.innerHTML = '';</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>healthTipsDiv.innerHTML = '';</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>bmiFill.style.width = '0%';</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>bmiFill.style.background = '#ccc';</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>return;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>}</span></p>
-<p class="p1"><span class="s1"><br>
-</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const heightInMeters = heightInCm / 100;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const bmi = (weightInKg / (heightInMeters * heightInMeters)).toFixed(1);</span></p>
-<p class="p1"><span class="s1"><br>
-</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>let statusKey = '';</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>let statusText = '';</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>let fillColor = '';</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>if (bmi &lt; 18.5) {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>statusKey = 'underweight';</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>statusText = t.status.underweight;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>fillColor = '#42a5f5';</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>} else if (bmi &gt;= 18.5 &amp;&amp; bmi &lt; 24) {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>statusKey = 'normal';</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>statusText = t.status.normal;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>fillColor = '#66bb6a';</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>} else if (bmi &gt;= 24 &amp;&amp; bmi &lt; 27) {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>statusKey = 'overweight';</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>statusText = t.status.overweight;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>fillColor = '#ffca28';</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>} else {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>statusKey = 'obese';</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>statusText = t.status.obese;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>fillColor = '#ef5350';</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>}</span></p>
-<p class="p1"><span class="s1"><br>
-</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const minWeight = (18.5 * (heightInMeters * heightInMeters)).toFixed(1);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const maxWeight = (23.9 * (heightInMeters * heightInMeters)).toFixed(1);</span></p>
-<p class="p1"><span class="s1"><br>
-</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>resultDiv.innerHTML = t.result(bmi, statusText);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>rangeInfoDiv.innerHTML = t.rangeInfo;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>weightSuggestionDiv.innerHTML = t.weightSuggestion(minWeight, maxWeight);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const tips = t.healthTips[statusKey];</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>healthTipsDiv.innerHTML = `${tips.message}&lt;br&gt;${tips.diet}&lt;br&gt;${tips.exercise}`;</span></p>
-<p class="p1"><span class="s1"><br>
-</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const percentage = Math.min((bmi / 40) * 100, 100);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>bmiFill.style.width = `${percentage}%`;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>bmiFill.style.background = fillColor;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p1"><span class="s1"><br>
-</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>function saveBMIResult() {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const result = document.getElementById('result').innerText;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>localStorage.setItem('bmiResult', result);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>alert(lang === 'zh' ? '</span><span class="s3">結果已儲存！</span><span class="s1">' : 'Result saved!');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p1"><span class="s1"><br>
-</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>function shareBMIResult() {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const result = document.getElementById('result').innerText;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const shareText = lang === 'zh' ? `</span><span class="s3">我的</span><span class="s1"> BMI </span><span class="s3">結果：</span><span class="s1">${result}` : `My BMI Result: ${result}`;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>if (navigator.share) {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>navigator.share({</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>title: lang === 'zh' ? 'BMI </span><span class="s3">計算器結果</span><span class="s1">' : 'BMI Calculator Result',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>text: shareText,</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>url: window.location.href</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>});</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>} else {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>alert(lang === 'zh' ? '</span><span class="s3">請複製結果分享！</span><span class="s1">' : 'Please copy the result to share!');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p1"><span class="s1"><br>
-</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>updateLabels();</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/script&gt;</span></p>
-<p class="p1"><span class="s1">&lt;/body&gt;</span></p>
-<p class="p1"><span class="s1">&lt;/html&gt;</span></p>
+    <div class="container">
+        <h1 id="title">BMI 計算器</h1>
+        <button onclick="switchLang('zh')">中文</button>
+        <button onclick="switchLang('en')">English</button>
+        <div>
+            <label id="heightLabel" for="height">身高:</label>
+            <input type="number" id="height" step="0.1" min="0" placeholder="如: 170">
+            <select id="heightUnit" onchange="convertHeight()">
+                <option value="cm">公分</option>
+                <option value="ft">英尺</option>
+            </select>
+        </div>
+        <div>
+            <label id="weightLabel" for="weight">體重:</label>
+            <input type="number" id="weight" step="0.1" min="0" placeholder="如: 60">
+            <select id="weightUnit" onchange="convertWeight()">
+                <option value="kg">公斤</option>
+                <option value="lb">磅</option>
+            </select>
+        </div>
+        <button id="calcButton" onclick="calculateBMI()">計算 BMI</button>
+        <div id="result"></div>
+        <div id="rangeInfo"></div>
+        <div id="weightSuggestion"></div>
+        <div id="healthTips"></div>
+        <button id="saveResult" onclick="saveBMIResult()" style="margin-top: 10px;">儲存結果</button>
+        <button id="shareResult" onclick="shareBMIResult()" style="margin-top: 10px;">分享結果</button>
+        <div class="bmi-bar">
+            <div class="bmi-fill" id="bmiFill"></div>
+            <span class="bmi-marker" style="left: 18.5%">18.5</span>
+            <span class="bmi-marker" style="left: 24%">24</span>
+            <span class="bmi-marker" style="left: 27%">27</span>
+        </div>
+        <div class="content-section">
+            <h2>什麼是 BMI？</h2>
+            <p>身體質量指數（BMI）是一種用來衡量體重是否健康的指標，通過身高和體重的比例計算。使用我們的 BMI 計算器，快速了解你的健康狀態！</p>
+            <h2>如何使用 BMI 計算器？</h2>
+            <p>輸入你的身高（公分或英尺）和體重（公斤或磅），點擊「計算 BMI」，即可查看你的 BMI 值和健康建議。</p>
+        </div>
+    </div>
+
+    <script>
+        let lang = 'zh';
+
+        const translations = {
+            zh: {
+                title: 'BMI 計算器',
+                heightLabel: '身高:',
+                weightLabel: '體重:',
+                calcButton: '計算 BMI',
+                invalidInput: '請輸入有效的身高和體重！',
+                result: (bmi, status) => `你的 BMI 是 ${bmi} (${status})`,
+                rangeInfo: '健康範圍：18.5 - 23.9（依據亞洲標準）',
+                weightSuggestion: (min, max) => `建議體重範圍：${min} - ${max} 公斤`,
+                status: {
+                    underweight: '過輕',
+                    normal: '正常',
+                    overweight: '過重',
+                    obese: '肥胖'
+                },
+                healthTips: {
+                    underweight: {
+                        message: '你的體重過輕，可能需要增加熱量攝取。',
+                        diet: '飲食建議：多吃高蛋白食物（如雞蛋、魚、豆類）和健康脂肪（如堅果、牛油果），增加主食（如糙米、全麥麵包）。',
+                        exercise: '運動建議：進行力量訓練（如舉重、深蹲）以增加肌肉量，避免過多有氧運動。'
+                    },
+                    normal: {
+                        message: '你的體重在健康範圍內，繼續保持！',
+                        diet: '飲食建議：均衡飲食，確保攝取足夠的蛋白質、蔬菜和全穀物，減少加工食品。',
+                        exercise: '運動建議：每週進行 150 分鐘中等強度的有氧運動（如快走、游泳），搭配 2-3 次力量訓練。'
+                    },
+                    overweight: {
+                        message: '你的體重偏重，建議控制熱量攝取並增加運動。',
+                        diet: '飲食建議：減少高糖、高脂肪食物（如甜點、油炸食品），多吃高纖維食物（如蔬菜、全穀物），控制份量。',
+                        exercise: '運動建議：每週至少 150 分鐘有氧運動（如跑步、騎腳踏車），搭配力量訓練以提升代謝。'
+                    },
+                    obese: {
+                        message: '你的體重屬於肥胖，建議積極減重以改善健康。',
+                        diet: '飲食建議：避免高熱量食物（如含糖飲料、速食），增加蔬菜、低脂蛋白質（如雞胸肉、魚），控制總熱量攝取。',
+                        exercise: '運動建議：從低強度運動開始（如散步、瑜伽），逐步增加到每週 200-300 分鐘有氧運動，搭配力量訓練。'
+                    }
+                },
+                units: {
+                    cm: '公分',
+                    ft: '英尺',
+                    kg: '公斤',
+                    lb: '磅'
+                }
+            },
+            en: {
+                title: 'BMI Calculator',
+                heightLabel: 'Height:',
+                weightLabel: 'Weight:',
+                calcButton: 'Calculate BMI',
+                invalidInput: 'Please enter valid height and weight!',
+                result: (bmi, status) => `Your BMI is ${bmi} (${status})`,
+                rangeInfo: 'Healthy range: 18.5 - 23.9 (Asian standard)',
+                weightSuggestion: (min, max) => `Suggested weight range: ${min} - ${max} kg`,
+                status: {
+                    underweight: 'Underweight',
+                    normal: 'Normal',
+                    overweight: 'Overweight',
+                    obese: 'Obese'
+                },
+                healthTips: {
+                    underweight: {
+                        message: 'You are underweight and may need to increase calorie intake.',
+                        diet: 'Diet tips: Eat more high-protein foods (e.g., eggs, fish, beans) and healthy fats (e.g., nuts, avocado), and increase carbs (e.g., brown rice, whole-grain bread).',
+                        exercise: 'Exercise tips: Focus on strength training (e.g., weightlifting, squats) to build muscle, and avoid excessive cardio.'
+                    },
+                    normal: {
+                        message: 'Your weight is in the healthy range—keep it up!',
+                        diet: 'Diet tips: Maintain a balanced diet with enough protein, vegetables, and whole grains, and reduce processed foods.',
+                        exercise: 'Exercise tips: Aim for 150 minutes of moderate cardio per week (e.g., brisk walking, swimming) and 2-3 strength training sessions.'
+                    },
+                    overweight: {
+                        message: 'You are overweight; consider managing calorie intake and increasing exercise.',
+                        diet: 'Diet tips: Cut back on high-sugar, high-fat foods (e.g., desserts, fried foods), eat more high-fiber foods (e.g., vegetables, whole grains), and control portions.',
+                        exercise: 'Exercise tips: Do at least 150 minutes of cardio per week (e.g., running, cycling) and add strength training to boost metabolism.'
+                    },
+                    obese: {
+                        message: 'You are obese; active weight loss is recommended for better health.',
+                        diet: 'Diet tips: Avoid high-calorie foods (e.g., sugary drinks, fast food), increase vegetables and lean protein (e.g., chicken breast, fish), and control total calorie intake.',
+                        exercise: 'Exercise tips: Start with low-intensity activities (e.g., walking, yoga), gradually increase to 200-300 minutes of cardio per week, and include strength training.'
+                    }
+                },
+                units: {
+                    cm: 'cm',
+                    ft: 'ft',
+                    kg: 'kg',
+                    lb: 'lb'
+                }
+            }
+        };
+
+        function updateLabels() {
+            const t = translations[lang];
+            const heightUnit = document.getElementById('heightUnit').value;
+            const weightUnit = document.getElementById('weightUnit').value;
+
+            document.getElementById('title').textContent = t.title;
+            document.getElementById('heightLabel').textContent = t.heightLabel;
+            document.getElementById('weightLabel').textContent = t.weightLabel;
+            document.getElementById('calcButton').textContent = t.calcButton;
+
+            const heightSelect = document.getElementById('heightUnit');
+            const weightSelect = document.getElementById('weightUnit');
+            heightSelect.options[0].text = t.units.cm;
+            heightSelect.options[1].text = t.units.ft;
+            weightSelect.options[0].text = t.units.kg;
+            weightSelect.options[1].text = t.units.lb;
+        }
+
+        function switchLang(newLang) {
+            lang = newLang;
+            updateLabels();
+            calculateBMI();
+        }
+
+        function convertHeight() {
+            const heightInput = document.getElementById('height');
+            const currentUnit = document.getElementById('heightUnit').value;
+            let value = parseFloat(heightInput.value);
+            if (isNaN(value)) return;
+
+            if (currentUnit === 'ft') {
+                value = (value * 30.48).toFixed(1);
+            } else {
+                value = (value / 30.48).toFixed(1);
+            }
+            heightInput.value = value;
+            updateLabels();
+            calculateBMI();
+        }
+
+        function convertWeight() {
+            const weightInput = document.getElementById('weight');
+            const currentUnit = document.getElementById('weightUnit').value;
+            let value = parseFloat(weightInput.value);
+            if (isNaN(value)) return;
+
+            if (currentUnit === 'lb') {
+                value = (value * 0.453592).toFixed(1);
+            } else {
+                value = (value / 0.453592).toFixed(1);
+            }
+            weightInput.value = value;
+            updateLabels();
+            calculateBMI();
+        }
+
+        function calculateBMI() {
+            const height = parseFloat(document.getElementById('height').value);
+            const weight = parseFloat(document.getElementById('weight').value);
+            const heightUnit = document.getElementById('heightUnit').value;
+            const weightUnit = document.getElementById('weightUnit').value;
+            const resultDiv = document.getElementById('result');
+            const rangeInfoDiv = document.getElementById('rangeInfo');
+            const weightSuggestionDiv = document.getElementById('weightSuggestion');
+            const healthTipsDiv = document.getElementById('healthTips');
+            const bmiFill = document.getElementById('bmiFill');
+            const t = translations[lang];
+
+            let heightInCm = heightUnit === 'ft' ? height * 30.48 : height;
+            let weightInKg = weightUnit === 'lb' ? weight * 0.453592 : weight;
+
+            if (isNaN(heightInCm) || isNaN(weightInKg) || heightInCm <= 0 || weightInKg <= 0) {
+                resultDiv.innerHTML = t.invalidInput;
+                rangeInfoDiv.innerHTML = '';
+                weightSuggestionDiv.innerHTML = '';
+                healthTipsDiv.innerHTML = '';
+                bmiFill.style.width = '0%';
+                bmiFill.style.background = '#ccc';
+                return;
+            }
+
+            const heightInMeters = heightInCm / 100;
+            const bmi = (weightInKg / (heightInMeters * heightInMeters)).toFixed(1);
+
+            let statusKey = '';
+            let statusText = '';
+            let fillColor = '';
+            if (bmi < 18.5) {
+                statusKey = 'underweight';
+                statusText = t.status.underweight;
+                fillColor = '#42a5f5';
+            } else if (bmi >= 18.5 && bmi < 24) {
+                statusKey = 'normal';
+                statusText = t.status.normal;
+                fillColor = '#66bb6a';
+            } else if (bmi >= 24 && bmi < 27) {
+                statusKey = 'overweight';
+                statusText = t.status.overweight;
+                fillColor = '#ffca28';
+            } else {
+                statusKey = 'obese';
+                statusText = t.status.obese;
+                fillColor = '#ef5350';
+            }
+
+            const minWeight = (18.5 * (heightInMeters * heightInMeters)).toFixed(1);
+            const maxWeight = (23.9 * (heightInMeters * heightInMeters)).toFixed(1);
+
+            resultDiv.innerHTML = t.result(bmi, statusText);
+            rangeInfoDiv.innerHTML = t.rangeInfo;
+            weightSuggestionDiv.innerHTML = t.weightSuggestion(minWeight, maxWeight);
+            const tips = t.healthTips[statusKey];
+            healthTipsDiv.innerHTML = `${tips.message}<br>${tips.diet}<br>${tips.exercise}`;
+
+            const percentage = Math.min((bmi / 40) * 100, 100);
+            bmiFill.style.width = `${percentage}%`;
+            bmiFill.style.background = fillColor;
+        }
+
+        function saveBMIResult() {
+            const result = document.getElementById('result').innerText;
+            localStorage.setItem('bmiResult', result);
+            alert(lang === 'zh' ? '結果已儲存！' : 'Result saved!');
+        }
+
+        function shareBMIResult() {
+            const result = document.getElementById('result').innerText;
+            const shareText = lang === 'zh' ? `我的 BMI 結果：${result}` : `My BMI Result: ${result}`;
+            if (navigator.share) {
+                navigator.share({
+                    title: lang === 'zh' ? 'BMI 計算器結果' : 'BMI Calculator Result',
+                    text: shareText,
+                    url: window.location.href
+                });
+            } else {
+                alert(lang === 'zh' ? '請複製結果分享！' : 'Please copy the result to share!');
+            }
+        }
+
+        updateLabels();
+    </script>
 </body>
 </html>
